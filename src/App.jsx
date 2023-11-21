@@ -7,12 +7,14 @@ import { getApiConfiguration, getGenres } from "./store/homeSlice";
 import Header from "./components/header/Header";
 import Footer from "./components/footer/Footer";
 import Home from "./pages/home/Home";
+import Details from "./pages/details/Details";
 import { BrowserRouter, Routes,Route } from "react-router-dom";
 function App() {
   const dispatch = useDispatch();
 
    useEffect(() => {
     fetchApiConfig();
+    generesCall();
    },[])
    
    const fetchApiConfig = () => {
@@ -29,11 +31,29 @@ function App() {
     });
 };
 
+    const generesCall = async () => {
+       let promises = [];
+       let endPoints = ["tv","movie"];
+       let allGenres = {};
+       
+       endPoints.forEach((tag) =>{
+        promises.push(fetchDataFromApi(`/genre/${tag}/list`));
+       })
+
+       const data = await Promise.all(promises);
+       data.map(({genres}) =>{
+         return genres.map((item) => (allGenres[item.id] =item));
+       })
+
+       dispatch(getGenres(allGenres));
+    }
+
   return (
     <BrowserRouter>
       <Header/>
       <Routes>
       <Route path="/" element={<Home />} />
+      <Route path="/:mediaType/:id" element={<Details />}/>
       </Routes>
       <Footer />
     </BrowserRouter>
