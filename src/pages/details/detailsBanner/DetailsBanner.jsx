@@ -7,7 +7,7 @@ import "./style.scss";
 
 import ContentWrapper from "../../../components/contentWrapper/ContentWrapper";
 import useFetch from "../../../hooks/useFetch";
-//import Genres from "../../../components/genres/Genres";
+import Genres from "../../../components/genres/Genres";
 import CircleRating from "../../../components/circleRating/CircleRating";
 import Img from "../../../components/lazyLoadImage/Img.jsx";
 import PosterFallback from "../../../assets/no-poster.png";
@@ -61,7 +61,11 @@ const DetailsBanner = ({ video, crew }) => {
                                 {data.tagline}
                           </div>    
                           <div className="row">
-                            <CircleRating rating={data.vote_average.toFixed(1)} />
+                          <CircleRating
+                                                rating={data.vote_average.toFixed(
+                                                    1
+                                                )}
+                                            />
                             <div className="playbtn"
                               onClick={() => {
                                 setShow(true);
